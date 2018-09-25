@@ -34,6 +34,18 @@ router.get('/', (req, res) => {
         console.log(setPokemons(jsonResp.results, req)); // Pass just the 'results' portion of the JSON which contains the array of Pokemon and the HTTP request portion to use in an image URL
         res.send(jsonResp);
     });
+
+    router.get('/:id', (req, res) => {
+        console.log(`Sending a request to ${pokeapi}`);
+        request(pokeapi+'/'+req.params.id, function (err, response, body) {
+            if (err) {
+                throw err; // If we get an error then bail
+            }
+
+            // Use Express to send the JSON back to the client in the web response
+            let jsonResp = JSON.parse(body); // Pull out the JSON body so we can add 'image URL' and 'id' before returning to client
+            res.send(jsonResp);
+        });
 });
 
 
